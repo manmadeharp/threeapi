@@ -24,13 +24,21 @@ app.engine('.hbs', hbs({
 
 app.set('view engine', '.hbs');
 
+app.get('/', (req, res) => { //location on server
+    res.render('index'); // actual page to send to client
+});
+
+app.get('/news', (req, res) => {
+    res.render('index', {newsstuff});
+})
+
 app.post('/harry', async (req, res) =>{
     let harrydata = await getHarry(req.body.harry);
     if (harrydata.cod == 404) {
         res.render('index', {err: 'location wasn\'t found'});
     } 
     else {
-        let harrytest = harrydata.url;
+        let harrytest = harrydata.url[0];
         console.log(Harrytest)
         res.render('index', {
             harrytest
@@ -43,7 +51,7 @@ app.post('/pokemon', async (req, res) => {
         res.render('index', {err: 'location wasn\'t found'});
     } 
     else {
-        let pokemontest = pokemondata.ability
+        let pokemontest = pokemondata.ability[0]
         console.log(pokemontest)
         res.render('index', {
             pokemontest
@@ -54,7 +62,7 @@ app.post('/starwars', async (req, res) => {
     if (swapidata.cod == 404) {
         res.render('index', {err: 'location wasn\'t found'});
     } else {
-        let swapitest = swapidata.people
+        let swapitest = swapidata.people[0]
         console.log(swapitest)
         res.render('index', {
             swapitest
